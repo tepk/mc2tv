@@ -1,0 +1,33 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<!--Mc2tv elements-->
+<link rel="import" href="../../src/mc2tv-player/mc2tv-player.html">
+<link rel="import" href="../../src/mc2tv-currency/mc2tv-currency.html">
+<dom-module id="mc2tv-app">
+    <template>
+        <style>
+            :host {
+                display: block;
+
+            }
+        </style>
+        <img src="../../img/full-size-logo.jpeg" style="width: 10%; height: 10%;">
+        <mc2tv-player></mc2tv-player>
+        <mc2tv-currency></mc2tv-currency>
+    </template>
+
+    <script>
+        Polymer({
+
+            is: 'mc2tv-app',
+
+            properties: {
+                prop1: {
+                    type: String,
+                    value: 'Страница приветствия',
+                },
+            },
+
+        });
+    </script>
+</dom-module>

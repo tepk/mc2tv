@@ -1,0 +1,18 @@
+{
+  "rootDir": "",
+  "bowerFolderName": "bower_components",
+  "ignoredFolders": ["test", "demo"],
+  "ignoredComponents": [],
+  "attributes": [
+    "effects",
+    "entry-animation",
+    "exit-animation"
+  ],
+  "resolve": {
+  "iron-flex": "iron-flex-layout-classes",
+  "iron-flex-reverse": "iron-flex-layout-classes",
+  "iron-flex-alignment": "iron-flex-layout-classes",
+  "iron-flex-factors": "iron-flex-layout-classes",
+  "iron-positioning": "iron-flex-layout-classes"
+}
+}

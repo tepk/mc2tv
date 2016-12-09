@@ -1,0 +1,36 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+`mc2tv-player`
+
+
+@demo demo/index.html 
+-->
+
+<dom-module id="mc2tv-player">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+        </style>
+        <iframe width="420" height="345"
+                src="https://www.youtube.com/embed/CsEFPIlIrj8?playlist=XGSy3_Czz8k,4v0cQAXg8hA&loop=1&autoplay=0&controls=1">
+            </iframe>
+    </template>
+
+    <script>
+        Polymer({
+
+            is: 'mc2tv-player',
+
+            properties: {
+                prop1: {
+                    type: String,
+                    value: 'mc2tv-player',
+                },
+            },
+
+        });
+    </script>
+</dom-module>
