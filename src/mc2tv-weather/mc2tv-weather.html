@@ -1,0 +1,60 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<!--UNUSED DIRECTLY-->
+<link rel="import" href="../polymer/polymer.html">
+<!--
+`mc2tv-weather`
+
+
+@demo demo/index.html 
+-->
+
+<dom-module id="mc2tv-weather">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+
+    <link rel="stylesheet" type="text/css" href="https://nst1.gismeteo.ru/assets/flat-ui/legacy/css/informer.min.css">
+    <div id="gsInformerID-MVgiAw7Ye1FWQ2" class="gsInformer" style="width:240px;height:68px">
+      <div class="gsIContent">
+        <div id="cityLink">
+          <a href="https://www.gismeteo.ru/weather-novosibirsk-4690/" target="_blank">Погода в Новосибирске</a>
+        </div>
+        <div class="gsLinks">
+          <table>
+            <tbody><tr>
+              <td>
+                <div class="leftCol">
+                  <a href="https://www.gismeteo.ru/" target="_blank">
+                    <img alt="Gismeteo" title="Gismeteo" src="https://nst1.gismeteo.ru/assets/flat-ui/img/logo-mini2.png" align="middle" border="0">
+                    <span>Gismeteo</span>
+                  </a>
+                </div>
+              </td>
+            </tr>
+          </tbody></table>
+        </div>
+      </div>
+    </div>
+    <script async src="https://www.gismeteo.ru/api/informer/getinformer/?hash=MVgiAw7Ye1FWQ2" type="text/javascript"></script>
+
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'mc2tv-weather',
+
+      properties: {
+        prop1: {
+          type: String,
+          value: 'mc2tv-weather',
+        },
+      },
+
+    });
+  </script>
+</dom-module>

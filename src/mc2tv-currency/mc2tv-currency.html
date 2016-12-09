@@ -15,52 +15,24 @@
         <style>
             :host {
                 display: block;
-            }
-
-            .currency-button {
-                display: table;
-                text-align: center;
-                overflow: hidden;
-                font-family: sans-serif;
-                background-color: #0b97c4;
-                width: 66px;
-                height: 66px;
-            }
-
-            .currency-button span {
-                display: table-cell;
-                vertical-align: middle;
                 color: #ffffff;
-                font-size: 1.3rem;
+                font-size: 2rem;
             }
-            .tooltip-div {
-                height: 50px;
-                min-width: 120px;
-                font-size: 1.2em;
-                text-align: center;
+            b {
+                font-weight: normal;
             }
+
+
         </style>
         <!-- Без этих ссылок оно не работает -->
         <a href="http://www.forexpf.ru/" title="Курсы валют ЦБ РФ" target="_blank" class="forexpf_" style="display: none;">Курсы валют ЦБ РФ</a>
         <script src="http://informers.forexpf.ru/php/cbrf.php?id=012345678"></script>
         <!-- / -->
 
-        <paper-card class="currency-button" id="usd">
-            <span>$</span>
-        </paper-card>
-        <paper-tooltip for="usd" offset="10" position="right" animation-delay="300">
-            <span class="tooltip-div">
-                <b id="usrutd">0.00</b>/<b id="usrutm">0.00</b>
-            </span>
-        </paper-tooltip>
-        <paper-card class="currency-button" id="eur">
-            <span>&euro;</span>
-        </paper-card>
-        <paper-tooltip for="eur" offset="10" position="right" animation-delay="300">
-            <span class="tooltip-div">
-                <b id="eurutd">0.00</b>/<b id="eurutm">0.00</b>
-            </span>
-        </paper-tooltip>
+
+        $ <b id="usrutd">0.00</b>/<b id="usrutm">0.00</b><br />
+        &euro; <b id="eurutd">0.00</b>/<b id="eurutm">0.00</b>
+
 
     </template>
 
