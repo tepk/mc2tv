@@ -1,0 +1,92 @@
+<html><head><link rel="import" href="../../bower_components/polymer/polymer.html">
+
+
+</head><body><dom-module id="mc2tv-weather">
+  <template>
+    <style>
+      :host {
+        display: block;
+        position: absolute;
+        right: 10px;
+        top: 240px;
+        font-size: 2em;
+      }
+      #gsInformerID-vDokeQ3p6q4QqM {
+        width: 150px !important;
+      }
+      b {
+        font-weight: normal;
+      }
+        #dollarWidget {
+            height: 81px;
+            margin-top: 40px;
+            padding: 5px;
+            line-height: 2em;
+        }
+        #dollarWidget span {
+            font-size: 3em;
+            font-family: monospace;
+            color: #0ec18b
+        }
+
+        #euroWidget {
+            height: 81px;
+            margin-top: 20px;
+            padding: 5px;
+            line-height: 2em;
+        }
+
+        #euroWidget span {
+            font-size: 3em;
+            font-family: monospace;
+            color: #cca809
+        }
+
+    </style>
+    <a href="http://www.forexpf.ru/" title="Курсы валют ЦБ РФ" target="_blank" class="forexpf_" style="display: none">Курсы валют ЦБ РФ</a>
+    <link rel="stylesheet" type="text/css" href="https://nst1.gismeteo.ru/assets/flat-ui/legacy/css/informer.min.css">
+    <div id="gsInformerID-vDokeQ3p6q4QqM" class="gsInformer" style="width:150px;height:68px; border: 1px solid">
+      <div class="gsIContent">
+        <div id="cityLink">
+          <a href="https://www.gismeteo.ru/weather-novosibirsk-4690/" target="_blank">Погода в Новосибирске</a>
+        </div>
+
+      </div>
+    </div>
+    <script async="" src="https://www.gismeteo.ru/api/informer/getinformer/?hash=vDokeQ3p6q4QqM" type="text/javascript"></script>
+
+    <div id="dollarWidget">
+      <span>$</span>&nbsp;<b id="usrutd">0.00</b>
+    </div>
+    <div id="euroWidget">
+      <span>€</span>&nbsp;<b id="eurutd">0.00</b>
+    </div>
+
+
+
+    <div hidden="">
+      <div>/<b id="eurutm">0.00</b></div>
+      <div id="usrutm">0.00</div>
+      <div id="gbrutd">0.00</div>
+      <div id="gbrutm">0.00</div>
+      <div id="byrutd">0.00</div>
+      <div id="byrutm">0.00</div>
+      <div id="kzrutd">0.00</div>
+      <div id="kzrutm">0.00</div>
+      <div id="cnrutd">0.00</div>
+      <div id="cnrutm">0.00</div>
+      <div id="uarutd">0.00</div>
+      <div id="uarutm">0.00</div>
+      <div id="chrutd">0.00</div>
+      <div id="chrutm">0.00</div>
+      <div id="jprutd">0.00</div>
+      <div id="jprutm">0.00</div>
+      <div id="pfdt1">0.00</div>
+      <div id="pfdt2">0.00</div>
+    </div>
+    <script src="https://informers.forexpf.ru/php/cbrf.php?id=012345678"></script>
+  </template>
+
+  <script>Polymer({is:"mc2tv-weather",properties:{prop1:{type:String,value:"mc2tv-weather"}}});</script>
+</dom-module>
+</body></html>

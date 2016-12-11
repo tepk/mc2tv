@@ -1,15 +1,24 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
+<!--App elements-->
+<link rel="import" href="../../bower_components/app-route/app-location.html">
+<link rel="import" href="../../bower_components/app-route/app-route.html">
+
+<!--Iron elements-->
+<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
+
 <!--Mc2tv elements-->
 <link rel="import" href="../../src/mc2tv-player/mc2tv-player.html">
+<link rel="import" href="../../src/mc2tv-playlist/mc2tv-playlist.html">
 <link rel="import" href="../../src/mc2tv-weather/mc2tv-weather.html">
 <dom-module id="mc2tv-app">
-<template>
+    <template>
         <style>
             :host {
                 display: block;
 
             }
+
             #header {
                 margin-top: 65px;
                 background: url('../../img/logo-background.png') repeat-x;
@@ -17,6 +26,7 @@
                 clear: both;
                 vertical-align: middle;
             }
+
             #logo {
                 position: absolute;
                 top: 0;
@@ -26,11 +36,29 @@
         <img src="../../img/logo-sector.png" id="logo">
         <div id="header">
         </div>
-        <mc2tv-player></mc2tv-player>
+        <app-location route="{{route}}"></app-location>
+        <app-route route="{{route}}" pattern="/:page" data="{{routeData}}" tail="{{tail}}">
+        </app-route>
+        <iron-pages selected="{{routeData.page}}" attr-for-selected="name" fallback-selection="player">
+            <mc2tv-player name="player"></mc2tv-player>
+            <mc2tv-playlist name="playlist"></mc2tv-playlist>
+        </iron-pages>
         <mc2tv-weather></mc2tv-weather>
 
     </template>
 
+    <script src="https://www.gstatic.com/firebasejs/3.6.3/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyD65WMLAkuZ01pOSMm2K_8rYjSHRfGHlWM",
+            authDomain: "mc2tv-74cfe.firebaseapp.com",
+            databaseURL: "https://mc2tv-74cfe.firebaseio.com",
+            storageBucket: "mc2tv-74cfe.appspot.com",
+            messagingSenderId: "9627546429"
+        };
+        firebase.initializeApp(config);
+    </script>
     <script>
         Polymer({
 
@@ -45,5 +73,5 @@
 
         });
     </script>
-    </dom-module>
+</dom-module>
 

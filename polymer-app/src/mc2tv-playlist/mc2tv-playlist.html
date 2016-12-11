@@ -1,0 +1,82 @@
+
+<!--Firebase elements-->
+
+<!--Paper elements-->
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<!--UNUSED DIRECTLY-->
+<!--
+`mc2tv-playlist`
+
+
+@demo demo/index.html 
+-->
+
+<dom-module id="mc2tv-playlist">
+    <template>
+        <style>
+            :host {
+                display: block;
+                width: 70%;
+                margin-left: 15%;
+            }
+        </style>
+
+        <h2>Добавление ролика в плейлист</h2>
+        <form>
+        <paper-input value="{{url}}" id="youtubeUrl"></paper-input>
+        [[prop2]]
+            <input type="submit" value="submit" style="display: none;">
+        </form>
+    </template>
+
+    <script>
+        Polymer({
+
+            is: 'mc2tv-playlist',
+            ready: function() {
+                var database = firebase.database();
+                console.log(database.ref('playlist'))
+            },
+            properties: {
+                prop1: {
+                    type: String,
+                    value: 'mc2tv-playlist',
+                },
+                url: {
+                    type: String,
+                    value: '',
+                    notify: true,
+                },
+                prop2: {
+                    type: String,
+                    computed: '__getYoutubeId(url)',
+                }
+            },
+            listeners: {
+                'submit': '__onFormSubmit'
+            },
+            __getYoutubeId: function (url) {
+                if (url) {
+                    if (url.substr(0, 24) === "https://www.youtube.com/") {
+                        return url.slice(-11)
+                    } else {
+                        return "Неверный URL"
+                    }
+                } else {
+                    return "Введите URL ролика"
+                }
+            },
+
+            __onFormSubmit: function(e) {
+                e.preventDefault()
+                var t = new Date().getTime()
+                console.log(this.$.youtubeUrl.value.slice(-11))
+                firebase.database().ref('playlist/' + t).set({
+                    youtubeId: this.$.youtubeUrl.value.slice(-11)
+                })
+
+            }
+
+        });
+    </script>
+</dom-module>

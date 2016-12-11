@@ -1,0 +1,6 @@
+{
+  "name": "mc2tv",
+  "short_name": "mc2tv",
+  "start_url": "/",
+  "display": "standalone"
+}
