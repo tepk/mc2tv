@@ -12,7 +12,7 @@
       :host {
         display: block;
         position: absolute;
-        right: 3px;
+        right: 10px;
         top: 240px;
         font-size: 2em;
       }
@@ -22,6 +22,31 @@
       b {
         font-weight: normal;
       }
+        #dollarWidget {
+            height: 81px;
+            margin-top: 40px;
+            padding: 5px;
+            line-height: 2em;
+        }
+        #dollarWidget span {
+            font-size: 3em;
+            font-family: monospace;
+            color: #0ec18b
+        }
+
+        #euroWidget {
+            height: 81px;
+            margin-top: 20px;
+            padding: 5px;
+            line-height: 2em;
+        }
+
+        #euroWidget span {
+            font-size: 3em;
+            font-family: monospace;
+            color: #cca809
+        }
+
     </style>
     <a href="http://www.forexpf.ru/" title="Курсы валют ЦБ РФ" target="_blank" class="forexpf_" style="display: none;">Курсы валют ЦБ РФ</a>
     <link rel="stylesheet" type="text/css" href="https://nst1.gismeteo.ru/assets/flat-ui/legacy/css/informer.min.css">
@@ -30,29 +55,16 @@
         <div id="cityLink">
           <a href="https://www.gismeteo.ru/weather-novosibirsk-4690/" target="_blank">Погода в Новосибирске</a>
         </div>
-        <div class="gsLinks">
-          <table>
-            <tbody><tr>
-              <td>
-                <div class="leftCol">
-                  <a href="https://www.gismeteo.ru/" target="_blank">
-                    <img alt="Gismeteo" title="Gismeteo" src="https://nst1.gismeteo.ru/assets/flat-ui/img/logo-mini2.png" align="middle" border="0">
-                    <span>Gismeteo</span>
-                  </a>
-                </div>
-              </td>
-            </tr>
-          </tbody></table>
-        </div>
+        
       </div>
     </div>
     <script async src="https://www.gismeteo.ru/api/informer/getinformer/?hash=vDokeQ3p6q4QqM" type="text/javascript"></script>
 
-    <div style="border: 1px solid; height: 81px; margin-top: 40px; padding: 5px;">
-      $&nbsp;<b id="usrutd">0.00</b>
+    <div id="dollarWidget">
+      <span>$</span>&nbsp;<b id="usrutd">0.00</b>
     </div>
-    <div style="border: 1px solid; height: 81px; margin-top: 20px; padding: 5px;">
-      &euro;&nbsp;<b id="eurutd">0.00</b>
+    <div id="euroWidget">
+      <span>&euro;</span>&nbsp;<b id="eurutd">0.00</b>
     </div>
 
 
