@@ -29,7 +29,7 @@
 
 
 /* eslint-disable quotes, comma-spacing */
-var PrecacheConfig = [["/index.html","9bf5ff9f27a029fe3ce0c259c8fac2ec"],["/src/mc2tv-app/mc2tv-app.html","f9130115269281d4648b97cce71effe0"]];
+var PrecacheConfig = [["/index.html","9bf5ff9f27a029fe3ce0c259c8fac2ec"],["/src/mc2tv-app/mc2tv-app.html","fdbc1ac72404269e8f1ea9fb5b604672"]];
 /* eslint-enable quotes, comma-spacing */
 var CacheNamePrefix = 'sw-precache-v1--' + (self.registration ? self.registration.scope : '') + '-';
 
