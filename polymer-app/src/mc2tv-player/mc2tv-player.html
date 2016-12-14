@@ -18,15 +18,15 @@
             }
 
             iframe {
-                margin-left: 0;
-                margin-right: 15%;
-                width: 80%;
-                height: 700px;
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 90%;
+                height: 750px;
             }
         </style>
         <firebase-query path="/playlist-dev" data="{{playlistData}}"></firebase-query>
-        <iframe width="420" height="345"
-                src="https://www.youtube.com/embed/[[firstClip]]?loop=1&autoplay=1&controls=0&playlist=[[playlistParsed]]">
+        <iframe src="https://www.youtube.com/embed/[[firstClip]]?loop=1&autoplay=1&controls=0&playlist=[[playlistParsed]]">
         </iframe>
     </template>
 
