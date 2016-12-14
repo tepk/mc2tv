@@ -1,4 +1,10 @@
-<html><head><link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<html><head><link rel="import" href="../../bower_components/polymer/polymer.html">
+
+
+<link rel="import" href="../../bower_components/polymerfire/firebase-query.html">
+
+
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
 
 
 
@@ -11,15 +17,23 @@
                 margin-left: 15%;
             }
         </style>
+        <firebase-query path="/playlist" data="{{playlistData}}"></firebase-query>
+
 
         <h2>Добавление ролика в плейлист</h2>
         <form>
-        <paper-input value="{{url}}" id="youtubeUrl"></paper-input>
-        [[prop2]]
+            <paper-input value="{{url}}" id="youtubeUrl"></paper-input>
+            [[prop2]]
             <input type="submit" value="submit" style="display: none">
         </form>
+        <h2>На данный момент в плейлисте числятся: [[playlistParsed]]</h2>
+
+        <template is="dom-repeat" items="{{playlistData}}" as="note">
+            <iframe width="420" height="345" src="https://www.youtube.com/embed/[[note.youtubeId]]">
+            </iframe>
+        </template>
     </template>
 
-    <script>Polymer({is:"mc2tv-playlist",ready:function(){var e=firebase.database();console.log(e.ref("playlist"))},properties:{prop1:{type:String,value:"mc2tv-playlist"},url:{type:String,value:"",notify:!0},prop2:{type:String,computed:"__getYoutubeId(url)"}},listeners:{submit:"__onFormSubmit"},__getYoutubeId:function(e){return e?"https://www.youtube.com/"===e.substr(0,24)?e.slice(-11):"Неверный URL":"Введите URL ролика"},__onFormSubmit:function(e){e.preventDefault();var t=(new Date).getTime();console.log(this.$.youtubeUrl.value.slice(-11)),firebase.database().ref("playlist/"+t).set({youtubeId:this.$.youtubeUrl.value.slice(-11)})}});</script>
+    <script>Polymer({is:"mc2tv-playlist",ready:function(){firebase.database()},properties:{prop1:{type:String,value:"mc2tv-playlist"},url:{type:String,value:"",notify:!0},prop2:{type:String,computed:"__getYoutubeId(url)"}},listeners:{submit:"__onFormSubmit"},__getYoutubeId:function(e){return e?"https://www.youtube.com/"===e.substr(0,24)?e.slice(-11):"Неверный URL":"Введите URL ролика"},__onFormSubmit:function(e){e.preventDefault();var t=(new Date).getTime();console.log(this.$.youtubeUrl.value.slice(-11)),firebase.database().ref("playlist/"+t).set({youtubeId:this.$.youtubeUrl.value.slice(-11)})}});</script>
 </dom-module>
 </body></html>

@@ -1,6 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
-
+<!--Firebase elements-->
+<link rel="import" href="../../bower_components/polymerfire/firebase-query.html">
 <!--
 `mc2tv-player`
 
@@ -13,16 +14,17 @@
         <style>
             :host {
                 display: block;
-                margin-left: 5%;
+                margin-left: 0;
             }
             iframe {
-                margin-left: 15%;
+                margin-left: 0;
                 margin-right: 15%;
-                width: 70%;
-                height: 600px;
+                width: 80%;
+                height: 700px;
             }
         </style>
-        <iframe width="420" height="345" src="https://www.youtube.com/embed/?playlist=XGSy3_Czz8k,4v0cQAXg8hA&loop=1&autoplay=0&controls=1">
+        <firebase-query path="/playlist" data="{{playlistData}}"></firebase-query>
+        <iframe width="420" height="345" src="https://www.youtube.com/embed/YErUSYlz-kI?loop=1&autoplay=1&controls=0&playlist=[[playlistParsed]]">
             </iframe>
     </template>
 
@@ -32,11 +34,37 @@
             is: 'mc2tv-player',
 
             properties: {
-                prop1: {
-                    type: String,
-                    value: 'mc2tv-player',
+                playlistData: {
+                    type: Array,
+                    notify: true
                 },
+                playlistParsed: {
+                    type: String,
+                    notify: true,
+                }
+
             },
+            observers: [
+                '__playlistDataObserver(playlistData.splices)'
+            ],
+            __playlistDataObserver: function (splices) {
+                var self = this
+                if ((splices) && (splices.indexSplices)) {
+                    this.debounce('wait', function () {
+                        var pl = splices.indexSplices[0].object
+                        var a = ""
+                        pl.forEach(function (item, i, arr) {
+                            if (i < (pl.length - 1)) {
+                                a = a + item.youtubeId + ',';
+                            } else {
+                                a = a + item.youtubeId
+                            }
+                        })
+                        self.playlistParsed = a;
+
+                    }, 500)
+                }
+            }
 
         });
     </script>

@@ -60,20 +60,12 @@
                     type: String,
                     computed: '__getYoutubeId(url)',
                 },
-                playlistData: {
-                    type: Array,
-                    notify: true
-                },
-                playlistParsed: {
-                    type: String,
-                    computed: '__getPlayListArr(playlistData)',
-                    observer: '__dataReady',
-                    notify: true
-                }
+
             },
             listeners: {
                 'submit': '__onFormSubmit'
             },
+
             __getYoutubeId: function (url) {
                 if (url) {
                     if (url.substr(0, 24) === "https://www.youtube.com/") {
@@ -85,22 +77,9 @@
                     return "Введите URL ролика"
                 }
             },
-            __getPlayListArr: function (playlistData) {
-                var d = playlistData;
 
-                    var a = "";
-                    var l = d.length;
-                    d.forEach(function (item, i) {
-                        if (i < (l - 1)) {
-                            a = a + item.youtubeId + ','
-                        } else {
-                            a = a + item.youtubeId
-                        }
-                    });
-                    console.log(a);
 
-                return a
-            },
+
             __onFormSubmit: function (e) {
                 e.preventDefault();
                 var t = new Date().getTime();
