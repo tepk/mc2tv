@@ -22,11 +22,11 @@
                 margin-left: 15%;
             }
         </style>
-        <firebase-query path="/playlist" data="{{playlistData}}"></firebase-query>
+        <firebase-query path="/playlist-dev" data="{{playlistData}}"></firebase-query>
 
 
         <h2>Добавление ролика в плейлист</h2>
-        <form>
+        <form id="form">
             <paper-input value="{{url}}" id="youtubeUrl"></paper-input>
             [[prop2]]
             <input type="submit" value="submit" style="display: none;">
@@ -69,7 +69,7 @@
             __getYoutubeId: function (url) {
                 if (url) {
                     if (url.substr(0, 24) === "https://www.youtube.com/") {
-                        return url.slice(-11)
+                        return url.substr(32, 11)
                     } else {
                         return "Неверный URL"
                     }
@@ -83,10 +83,11 @@
             __onFormSubmit: function (e) {
                 e.preventDefault();
                 var t = new Date().getTime();
-                console.log(this.$.youtubeUrl.value.slice(-11));
+                console.log(this.$.form)
                 firebase.database().ref('playlist-dev/' + t).set({
-                    youtubeId: this.$.youtubeUrl.value.slice(-11)
+                    youtubeId: this.$.youtubeUrl.value.substr(32, 11)
                 })
+                this.$.form.reset()
 
             }
 
