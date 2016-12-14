@@ -84,7 +84,7 @@
                 e.preventDefault();
                 var t = new Date().getTime();
                 console.log(this.$.youtubeUrl.value.slice(-11));
-                firebase.database().ref('playlist/' + t).set({
+                firebase.database().ref('playlist-dev/' + t).set({
                     youtubeId: this.$.youtubeUrl.value.slice(-11)
                 })
 
