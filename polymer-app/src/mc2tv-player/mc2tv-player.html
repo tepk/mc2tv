@@ -2,6 +2,9 @@
 
 <!--Firebase elements-->
 <link rel="import" href="../../bower_components/polymerfire/firebase-query.html">
+
+<!--Google elements-->
+<link rel="import" href="../../bower_components/google-youtube/google-youtube.html">
 <!--
 `mc2tv-player`
 
@@ -25,9 +28,11 @@
                 height: 750px;
             }
         </style>
-        <firebase-query path="/playlist-dev" data="{{playlistData}}"></firebase-query>
+        <firebase-query path="/playlist" data="{{playlistData}}"></firebase-query>
         <iframe src="https://www.youtube.com/embed/[[firstClip]]?loop=1&autoplay=1&controls=0&playlist=[[playlistParsed]]">
         </iframe>
+        <!-- <google-youtube video-id=[[firstClip]] height="270px" width="480px" rel="0" loop="1" controls="1" autoplay="1" showinfo="0" enablejsapi="1" listType="playlist" playlist=[[playlistParsed]]>
+        </google-youtube> -->
     </template>
 
     <script>

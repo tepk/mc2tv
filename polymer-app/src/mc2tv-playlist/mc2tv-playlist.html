@@ -21,8 +21,12 @@
                 width: 70%;
                 margin-left: 15%;
             }
+            .delete-item {
+                color: #880000;
+            }
+
         </style>
-        <firebase-query path="/playlist-dev" data="{{playlistData}}"></firebase-query>
+        <firebase-query path="/playlist" data="{{playlistData}}"></firebase-query>
 
 
         <h2>Добавление ролика в плейлист</h2>
@@ -34,8 +38,12 @@
         <h2>На данный момент в плейлисте числятся: [[playlistParsed]]</h2>
 
         <template is="dom-repeat" items="{{playlistData}}" as="note">
-            <iframe width="420" height="345" src="https://www.youtube.com/embed/[[note.youtubeId]]">
-            </iframe>
+            <div style="margin-right: 10px; float: left;">
+                <div style="text-align: right; font-size: 1.5em;"><b class="delete-item" id="[[note.$key]]" on-tap="__deleteItem">&times;</b></div>
+                <iframe width="420" height="345" src="https://www.youtube.com/embed/[[note.youtubeId]]">
+                </iframe>
+
+            </div>
         </template>
     </template>
 
@@ -78,13 +86,18 @@
                 }
             },
 
-
+            __deleteItem: function(e, t) {
+                console.log(this)
+                console.log(e)
+                console.log(e.target.id)
+                firebase.database().ref('playlist').child(e.target.id).remove()
+            },
 
             __onFormSubmit: function (e) {
                 e.preventDefault();
                 var t = new Date().getTime();
                 console.log(this.$.form)
-                firebase.database().ref('playlist-dev/' + t).set({
+                firebase.database().ref('playlist').push({
                     youtubeId: this.$.youtubeUrl.value.substr(32, 11)
                 })
                 this.$.form.reset()
