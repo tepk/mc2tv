@@ -23,6 +23,12 @@
             }
             .delete-item {
                 color: #880000;
+                cursor: pointer;
+            }
+
+            .delete-item :hover {
+                color: #0a3142;
+                cursor: pointer;
             }
 
         </style>
@@ -39,7 +45,7 @@
 
         <template is="dom-repeat" items="{{playlistData}}" as="note">
             <div style="margin-right: 10px; float: left;">
-                <div style="text-align: right; font-size: 1.5em;"><b class="delete-item" id="[[note.$key]]" on-tap="__deleteItem">&times;</b></div>
+                <div style="text-align: right; font-size: 1.5em;"><a class="delete-item" id="[[note.$key]]" on-tap="__deleteItem">&times;</a></div>
                 <iframe width="420" height="345" src="https://www.youtube.com/embed/[[note.youtubeId]]">
                 </iframe>
 
@@ -87,6 +93,7 @@
             },
 
             __deleteItem: function(e, t) {
+                e.preventDefault();
                 console.log(this)
                 console.log(e)
                 console.log(e.target.id)
