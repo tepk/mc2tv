@@ -43,9 +43,15 @@
             #ads {
 
             }
+
+            #logo {
+                position: absolute;
+                top: 30px;
+                right: 30px;
+            }
         </style>
         <firebase-query path="/playlist" data="{{playlistData}}"></firebase-query>
-
+        <a href="/"><img src="../../img/logo.png" id="logo" style="z-index: 1000;"></a>
         <div class="pl">
             <google-youtube id="playerY" video-id="[[firstClip]]" height="100%" width="100%" rel="0" loop="1"
                             controls="0" autoplay="1" showinfo="0" enablejsapi="1" showinfo="0">

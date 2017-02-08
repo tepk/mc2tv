@@ -3,6 +3,10 @@
 <!--Firebase elements-->
 <link rel="import" href="../../bower_components/polymerfire/firebase-query.html">
 
+<!--Paper elements-->
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+
 <!--UNUSED DIRECTLY-->
 <link rel="import" href="../../bower_components/neon-animation/neon-animation-runner-behavior.html">
 <link rel="import" href="../../bower_components/neon-animation/animations/fade-in-animation.html">
@@ -11,6 +15,8 @@
 <link rel="import" href="../../bower_components/neon-animation/animations/slide-from-top-animation.html">
 <link rel="import" href="../../bower_components/neon-animation/animations/slide-from-right-animation.html">
 <link rel="import" href="../../bower_components/neon-animation/animations/slide-from-bottom-animation.html">
+<!--UNUSED DIRECTLY-->
+<!--UNUSED DIRECTLY-->
 <!--UNUSED DIRECTLY-->
 <!--UNUSED DIRECTLY-->
 <!--
@@ -27,24 +33,38 @@
                 display: block;
                 margin-left: 30px;
                 margin-right: 180px;
-
+                width: 800px;
+                font-family: sans-serif;
             }
             .thumb {
-                margin-left: 5px;
-                margin-top: 10px;
                 height: 240px;
+            }
+
+            h3 {
+                font-weight: normal;
+                color: #e9841a;
+            }
+
+            .delete-item {
+                color: #880000;
+                cursor: pointer;
+            }
+
+            .delete-item :hover {
+                color: #0a3142;
+                cursor: pointer;
             }
 
         </style>
         <firebase-query path="/ads" data="{{adsArr}}"></firebase-query>
         <form id="uploadForm">
-            <input type="file">
-            <input type="submit">
+            <paper-input type="file"></paper-input>
+            <input type="submit" value="Добавить флаер">
         </form>
-        {{adsArr}}
+        <h3>Эти рекламные флаеры будут появляться во время воспроизведения плейлиста</h3>
         <template is="dom-repeat" items="{{adsArr}}" as="ad">
-            <div style="margin-right: 10px; float: left; background: #ffffff;">
-                <!-- <div style="text-align: right; font-size: 1.5em;"><a class="delete-item" id="[[note.$key]]" on-tap="__deleteItem">×</a></div> -->
+            <div style="margin-right: 10px; margin-top: 10px; float: left; background: #ffffff; border: 1px solid rgba(0, 0, 0, 0.2)">
+                <div style="text-align: right; font-size: 1.5em; padding-right: 5px;"><a class="delete-item" id="[[ad.$key]]" on-tap="__deleteItem">×</a></div>
                 <img src="[[ad.adsImg]]" class="thumb">
                 <!-- <iframe width="420" height="345" src="https://www.youtube.com/embed/[[note.youtubeId]]">
                 </iframe> -->
@@ -69,6 +89,14 @@
 
             __uploadStarted: function () {
                 console.log('upload started')
+            },
+
+            __deleteItem: function(e, t) {
+                e.preventDefault();
+                console.log(this)
+                console.log(e)
+                console.log(e.target.id)
+                firebase.database().ref('ads').child(e.target.id).remove()
             },
 
             __onFileSubmit: function (e, t, d) {
