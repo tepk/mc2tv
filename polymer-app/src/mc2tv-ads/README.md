@@ -1,4 +1,4 @@
-# \<mc2tv-weather\>
+# \<mc2tv-ads\>
 
 
 

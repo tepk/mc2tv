@@ -5,6 +5,11 @@
 
 <!--Google elements-->
 <link rel="import" href="../../bower_components/google-youtube/google-youtube.html">
+
+<!--Mc2tv elements-->
+<link rel="import" href="../../src/mc2tv-ads/mc2tv-ads.html">
+
+
 <!--
 `mc2tv-player`
 
@@ -18,28 +23,55 @@
             :host {
                 display: block;
                 margin-left: 0;
+
             }
 
-            iframe {
+            .pl {
                 position: absolute;
+                background: #000000;
                 bottom: 0;
                 left: 0;
-                width: 90%;
-                height: 750px;
+                width: 100%;
+                height: 100%;
+            }
+
+            #playerY {
+                width: 100%;
+                height: 99%;
+            }
+
+            #ads {
+
             }
         </style>
         <firebase-query path="/playlist" data="{{playlistData}}"></firebase-query>
-        <iframe src="https://www.youtube.com/embed/[[firstClip]]?loop=1&autoplay=1&controls=0&playlist=[[playlistParsed]]">
-        </iframe>
-        <!-- <google-youtube video-id=[[firstClip]] height="270px" width="480px" rel="0" loop="1" controls="1" autoplay="1" showinfo="0" enablejsapi="1" listType="playlist" playlist=[[playlistParsed]]>
-        </google-youtube> -->
-    </template>
 
+        <div class="pl">
+            <google-youtube id="playerY" video-id="[[firstClip]]" height="100%" width="100%" rel="0" loop="1"
+                            controls="0" autoplay="1" showinfo="0" enablejsapi="1" showinfo="0">
+            </google-youtube>
+        </div>
+        <mc2tv-ads id="ads">
+            {{currentIndex}}
+        </mc2tv-ads>
+    </template>
+    <script src="../../scripts/moments.js"></script>
     <script>
         Polymer({
 
-            is: 'mc2tv-player',
 
+            is: 'mc2tv-player',
+            attached: function () {
+                var self = this
+                setInterval(function () {
+                    self.fire('setTimeOutInterval');
+                    setTimeout(function () {
+                        self.fire('closeTimeOutInterval')
+                    }, 3000)
+                }, 18000)
+
+
+            },
             properties: {
                 playlistData: {
                     type: Array,
@@ -52,12 +84,69 @@
                 firstClip: {
                     type: String,
                     notify: true
+                },
+                currentIndex: {
+                    type: Number,
+                    value: 0,
+                    notify: true
                 }
+
+            },
+            listeners: {
+                'google-youtube-ready': '__onYoutubeReady',
+                'google-youtube-state-change': '__stateChange',
+                'stop': '__videoStopped',
+                'pause': '__pauseVideo',
+                'play': '__playVideo',
+                'setTimeOutInterval': '__showAds',
+                'closeTimeOutInterval': '__closeAds'
 
             },
             observers: [
                 '__playlistDataObserver(playlistData.splices)'
             ],
+
+            __showAds: function () {
+                this.$.ads.animate()
+            },
+            __closeAds: function () {
+                this.$.ads.animateDead()
+            },
+
+            __onYoutubeReady: function () {
+                console.log('ready')
+                this.$.playerY.mute()
+                this.$.playerY.play()
+            },
+            __stateChange: function (e) {
+                if (e.detail.data === 0) {
+                    console.log('video stopped')
+                    this.fire('stop')
+
+                }
+            },
+            __pauseVideo: function () {
+                this.$.playerY.pause()
+            },
+            __playVideo: function () {
+                this.$.playerY.play()
+            },
+            __videoStopped: function () {
+                console.log('videoStopped')
+                var self = this;
+                var count = this.playlistData.length
+                if ((self.currentIndex + 1) <= count) {
+                    self.currentIndex = self.currentIndex + 1
+                    self.firstClip = this.playlistData[self.currentIndex].youtubeId
+                    this.$.playerY.play()
+                } else {
+                    self.firstClip = this.playlistData[0].youtubeId
+                    self.currentIndex = 0
+                    this.$.playerY.play()
+                }
+                console.log('nextVideo')
+            },
+
             __playlistDataObserver: function (splices) {
                 var self = this
                 if ((splices) && (splices.indexSplices)) {

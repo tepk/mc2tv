@@ -10,40 +10,30 @@
 <!--Mc2tv elements-->
 <link rel="import" href="../../src/mc2tv-player/mc2tv-player.html">
 <link rel="import" href="../../src/mc2tv-playlist/mc2tv-playlist.html">
-<link rel="import" href="../../src/mc2tv-weather/mc2tv-weather.html">
+<link rel="import" href="../../src/mc2tv-ads/add-ads.html">
 <dom-module id="mc2tv-app">
     <template>
         <style>
             :host {
                 display: block;
-
-            }
-
-            #header {
-                margin-top: 65px;
-                background: url('../../img/logo-background.png') repeat-x;
-                height: 240px;
-                clear: both;
-                vertical-align: middle;
+                height: 100%;
             }
 
             #logo {
                 position: absolute;
-                top: 0;
-                left: 0;
+                top: 30px;
+                right: 30px;
             }
         </style>
-        <a href="/"><img src="../../img/logo-sector.png" id="logo"></a>
-        <div id="header">
-        </div>
+        <a href="/"><img src="../../img/logo.png" id="logo" style="z-index: 1000;"></a>
         <app-location route="{{route}}"></app-location>
         <app-route route="{{route}}" pattern="/:page" data="{{routeData}}" tail="{{tail}}">
         </app-route>
         <iron-pages selected="{{routeData.page}}" attr-for-selected="name" fallback-selection="player">
             <mc2tv-player name="player"></mc2tv-player>
             <mc2tv-playlist name="playlist"></mc2tv-playlist>
+            <add-ads name="addads"></add-ads>
         </iron-pages>
-        <mc2tv-weather></mc2tv-weather>
 
     </template>
 

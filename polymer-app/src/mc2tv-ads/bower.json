@@ -1,6 +1,6 @@
 {
-  "name": "mc2tv-weather",
-  "main": "mc2tv-weather.html",
+  "name": "mc2tv-ads",
+  "main": "mc2tv-ads.html",
   "dependencies": {
     "polymer": "Polymer/polymer#^1.4.0"
   },

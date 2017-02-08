@@ -1,0 +1,170 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<!--Firebase elements-->
+<link rel="import" href="../../bower_components/polymerfire/firebase-query.html">
+
+<!--Neon elements-->
+<link rel="import" href="../../bower_components/neon-animation/neon-animation-runner-behavior.html">
+<link rel="import" href="../../bower_components/neon-animation/animations/fade-in-animation.html">
+<link rel="import" href="../../bower_components/neon-animation/animations/fade-out-animation.html">
+
+<!--UNUSED DIRECTLY-->
+<link rel="import" href="../../bower_components/neon-animation/animations/slide-from-left-animation.html">
+<link rel="import" href="../../bower_components/neon-animation/animations/slide-from-top-animation.html">
+<link rel="import" href="../../bower_components/neon-animation/animations/slide-from-right-animation.html">
+<link rel="import" href="../../bower_components/neon-animation/animations/slide-from-bottom-animation.html">
+<!--UNUSED DIRECTLY-->
+<!--UNUSED DIRECTLY-->
+<!--
+`mc2tv-ads`
+
+
+@demo demo/index.html 
+-->
+
+<dom-module id="mc2tv-ads">
+    <template>
+        <style>
+            :host {
+                display: block;
+                position: fixed;
+                margin: 0;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 1000;
+                --ads-opacity: 0;
+                --ads-background: url('../../img/logo.png');
+
+            }
+            #name {
+                display: block;
+                position: fixed;
+                top: 30px;
+                left: 30px;
+                right: 30px;
+                bottom: 30px;
+                opacity: var(--ads-opacity)
+            }
+
+            #image {
+                width: 100%;
+                height: 100%;
+                background-image: var(--ads-background);
+                background-repeat: no-repeat;
+                background-position: 50% 50%;
+                background-size: contain;
+            }
+
+        </style>
+        <firebase-query path="/ads" data="{{adsArr}}"></firebase-query>
+        <div id="name">
+            <!-- <img src="[[firstAd]]" id="image"> -->
+            <div id="image"></div>
+        </div>
+    </template>
+
+    <script>
+        Polymer({
+
+            is: 'mc2tv-ads',
+
+            properties: {
+                firstAd: {
+                    type: String,
+                    notify: true
+                },
+                currentIndex: {
+                    type: Number,
+                    value: 0,
+                    notify: true
+                },
+                animationConfig: {
+                    value: function () {
+                        return {
+                            'entry': [
+                                {
+                                    name: 'fade-in-animation',
+                                    node: this.$.name,
+                                    timing: {duration: 1500}
+                                }
+                            ],
+                            'exit': [
+                                {
+                                    name: 'fade-out-animation',
+                                    node: this.$.name,
+                                    timing: {duration: 1500}
+                                }
+                            ]
+                        }
+                    }
+                },
+            },
+            listeners: {
+                'changeAds': '__changeAds'
+            },
+
+            observers: [
+                '__adsDataObserver(adsArr.splices)'
+            ],
+
+            behaviors: [
+                Polymer.NeonAnimationRunnerBehavior
+            ],
+
+            animate: function () {
+                this.fire('pause')
+                this.playAnimation('entry');
+                this.fire('runCounter')
+                this.customStyle['--ads-opacity'] = '1'
+                this.customStyle['--ads-background'] = 'url("' + this.adsArr[this.currentIndex].adsImg + '")'
+                this.updateStyles()
+            },
+            animateDead: function () {
+                this.fire('play')
+                this.playAnimation('exit');
+                this.fire('runCounter')
+                this.customStyle['--ads-opacity'] = '0'
+                this.updateStyles()
+                this.fire('changeAds')
+            },
+
+            __adsDataObserver: function (splices) {
+                var self = this
+                if ((splices) && (splices.indexSplices)) {
+                    this.debounce('wait', function () {
+                        var pl = splices.indexSplices[0].object
+                        console.log(pl[0])
+                        self.firstAd = pl[0].adsImg
+                        /*pl.forEach(function (item, i, arr) {
+                            if (i === 0) {
+                                self.firstAd = item.adsUrl
+                                console.log(self.firstAd)
+                            }
+                        })
+                        self.playlistParsed = a;
+                        console.log(a) */
+
+                    }, 500)
+                }
+            },
+            __changeAds: function () {
+                var self = this;
+                setTimeout(function(){
+
+                var count = self.adsArr.length
+                    console.log(self.adsArr)
+                if ((self.currentIndex + 1) < count) {
+                    self.currentIndex = self.currentIndex + 1
+                    self.firstAd = self.adsArr[self.currentIndex].adsImg
+                } else {
+                    self.firstAd = self.adsArr[0].adsImg
+                    self.currentIndex = 0
+                }
+                }, 1000)
+            },
+
+        });
+    </script>
+</dom-module>
