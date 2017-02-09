@@ -33,11 +33,11 @@
                 display: block;
                 margin-left: 30px;
                 margin-right: 180px;
-                width: 800px;
+                width: 300px;
                 font-family: sans-serif;
             }
             .thumb {
-                height: 240px;
+                width: 240px;
             }
 
             h3 {
@@ -58,7 +58,7 @@
         </style>
         <firebase-query path="/ads" data="{{adsArr}}"></firebase-query>
         <form id="uploadForm">
-            <paper-input type="file"></paper-input>
+            <input type="file" />
             <input type="submit" value="Добавить флаер">
         </form>
         <h3>Эти рекламные флаеры будут появляться во время воспроизведения плейлиста</h3>
