@@ -64,6 +64,18 @@
     <script src="../../scripts/moments.js"></script>
     <script>
         Polymer({
+            ready: function () {
+                Array.prototype.shuffle = function (b) {
+                    var i = this.length, j, t;
+                    while (i) {
+                        j = Math.floor(( i-- ) * Math.random());
+                        t = b && typeof this[i].shuffle !== 'undefined' ? this[i].shuffle() : this[i];
+                        this[i] = this[j];
+                        this[j] = t;
+                    }
+                    return this;
+                };
+            },
 
 
             is: 'mc2tv-player',
@@ -77,27 +89,37 @@
                 }, 180000)
 
 
-            },
+            }
+            ,
             properties: {
                 playlistData: {
                     type: Array,
                     notify: true
-                },
+                }
+                ,
+                playlistShuffle: {
+                    type: Array,
+                    notify: true
+                }
+                ,
                 playlistParsed: {
                     type: String,
                     notify: true,
-                },
+                }
+                ,
                 firstClip: {
                     type: String,
                     notify: true
-                },
+                }
+                ,
                 currentIndex: {
                     type: Number,
                     value: 0,
                     notify: true
                 }
 
-            },
+            }
+            ,
             listeners: {
                 'google-youtube-ready': '__onYoutubeReady',
                 'google-youtube-state-change': '__stateChange',
@@ -107,39 +129,47 @@
                 'setTimeOutInterval': '__showAds',
                 'closeTimeOutInterval': '__closeAds'
 
-            },
+            }
+            ,
             observers: [
                 '__playlistDataObserver(playlistData.splices)'
             ],
 
             __showAds: function () {
                 this.$.ads.animate()
-            },
+            }
+            ,
             __closeAds: function () {
                 this.$.ads.animateDead()
-            },
+            }
+            ,
 
             __onYoutubeReady: function () {
                 console.log('ready')
                 this.$.playerY.mute()
                 this.$.playerY.play()
-            },
+            }
+            ,
             __stateChange: function (e) {
                 if (e.detail.data === 0) {
                     console.log('video stopped')
                     this.fire('stop')
 
                 }
-            },
+            }
+            ,
             __pauseVideo: function () {
                 this.$.playerY.pause()
-            },
+            }
+            ,
             __playVideo: function () {
                 this.$.playerY.play()
-            },
+            }
+            ,
             __videoStopped: function () {
                 console.log('videoStopped')
                 var self = this;
+                this.playlistData.shuffle()
                 var count = this.playlistData.length
                 if ((self.currentIndex + 1) <= count) {
                     self.currentIndex = self.currentIndex + 1
@@ -151,11 +181,13 @@
                     this.$.playerY.play()
                 }
                 console.log('nextVideo')
-            },
+            }
+            ,
 
             __playlistDataObserver: function (splices) {
                 var self = this
                 if ((splices) && (splices.indexSplices)) {
+                    
                     this.debounce('wait', function () {
                         var pl = splices.indexSplices[0].object
                         var a = ""
@@ -178,6 +210,7 @@
                 }
             }
 
-        });
+        })
+        ;
     </script>
 </dom-module>
