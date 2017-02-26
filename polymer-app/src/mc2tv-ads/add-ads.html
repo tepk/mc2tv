@@ -4,21 +4,12 @@
 <link rel="import" href="../../bower_components/polymerfire/firebase-query.html">
 
 <!--Paper elements-->
-<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-spinner/paper-spinner-lite.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 
-<!--UNUSED DIRECTLY-->
-<link rel="import" href="../../bower_components/neon-animation/neon-animation-runner-behavior.html">
-<link rel="import" href="../../bower_components/neon-animation/animations/fade-in-animation.html">
-<link rel="import" href="../../bower_components/neon-animation/animations/fade-out-animation.html">
-<link rel="import" href="../../bower_components/neon-animation/animations/slide-from-left-animation.html">
-<link rel="import" href="../../bower_components/neon-animation/animations/slide-from-top-animation.html">
-<link rel="import" href="../../bower_components/neon-animation/animations/slide-from-right-animation.html">
-<link rel="import" href="../../bower_components/neon-animation/animations/slide-from-bottom-animation.html">
-<!--UNUSED DIRECTLY-->
-<!--UNUSED DIRECTLY-->
-<!--UNUSED DIRECTLY-->
-<!--UNUSED DIRECTLY-->
+<!--Iron elements-->
+<link rel="import" href="../../bower_components/iron-icons/editor-icons.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
 <!--
 `mc2tv-ads`
 
@@ -55,19 +46,44 @@
                 cursor: pointer;
             }
 
+            #uploadImage {
+                display: none;
+            }
+
+            #spinnerDiv {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                opacity: 0.9;
+                background-color: #ffffff;
+                z-index: 999999;
+            }
+
+            #spinnerDiv paper-spinner-lite {
+                position: fixed;
+                top: 50%;
+                left: 50%;
+            }
+
         </style>
         <firebase-query path="/ads" data="{{adsArr}}"></firebase-query>
+        <div id="spinnerDiv" hidden$="[[!spinner]]">
+            <paper-spinner-lite class="thin" active></paper-spinner-lite>
+        </div>
         <form id="uploadForm">
-            <input type="file" />
-            <input type="submit" value="Добавить флаер">
+            <paper-button raised on-tap="__adsTap" style="margin-left: -10px; max-width: 280px;">
+                <input type="file" id="uploadImage" on-change="__inputFile">
+                <iron-icon icon="editor:insert-photo"></iron-icon>
+                Выбрать и добавить флаер
+            </paper-button>
         </form>
         <h3>Эти рекламные флаеры будут появляться во время воспроизведения плейлиста</h3>
         <template is="dom-repeat" items="{{adsArr}}" as="ad">
             <div style="margin-right: 10px; margin-top: 10px; float: left; background: #ffffff; border: 1px solid rgba(0, 0, 0, 0.2)">
                 <div style="text-align: right; font-size: 1.5em; padding-right: 5px;"><a class="delete-item" id="[[ad.$key]]" on-tap="__deleteItem">×</a></div>
                 <img src="[[ad.adsImg]]" class="thumb">
-                <!-- <iframe width="420" height="345" src="https://www.youtube.com/embed/[[note.youtubeId]]">
-                </iframe> -->
             </div>
         </template>
 
@@ -81,10 +97,64 @@
 
             is: 'add-ads',
 
-            properties: {},
+            properties: {
+                spinner: {
+                    type: Boolean,
+                    value: false,
+                    notify: true
+                }
+
+            },
             listeners: {
                 'submit': '__onFileSubmit',
                 'running': '__uploadStarted'
+            },
+
+            __adsTap: function() {
+                this.$.uploadImage.click()
+            },
+
+            __inputFile: function(e) {
+                if (confirm('Вы выбрали файл ' +  e.target.files[0].name + '. Вы уверены что хотите загрузить именно его?')) {
+                    this.spinner = true
+                    console.log(this.spinner)
+                    var storageRef = firebase.storage().ref();
+                    var self = this
+                    e.preventDefault()
+                    var file = e.target.files[0]
+                    console.log(file)
+                    var imagesRef = storageRef.child('images/' + file.name);
+                    var progress = imagesRef.put(file);
+                    progress.on('state_changed', function(snapshot){
+                        // Observe state change events such as progress, pause, and resume
+                        // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+                        var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                        console.log('Upload is ' + progress + '% done');
+                        switch (snapshot.state) {
+                            case firebase.storage.TaskState.PAUSED: // or 'paused'
+                                console.log('Upload is paused');
+                                break;
+                            case firebase.storage.TaskState.RUNNING: // or 'running'
+                                console.log('Upload is running');
+                                break;
+                        }
+                    }, function(error) {
+                        // Handle unsuccessful uploads
+                    }, function() {
+                        // Handle successful uploads on complete
+                        // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+                        var downloadURL = progress.snapshot.downloadURL;
+                        firebase.database().ref('ads').push({
+                            adsImg: downloadURL
+                        })
+                        self.spinner = false
+                        console.log(this.spinner)
+                    })
+                } else {
+                    console.log('cancel this photo')
+                }
+
+
             },
 
             __uploadStarted: function () {

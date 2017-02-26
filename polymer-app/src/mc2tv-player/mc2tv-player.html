@@ -123,6 +123,7 @@
             listeners: {
                 'google-youtube-ready': '__onYoutubeReady',
                 'google-youtube-state-change': '__stateChange',
+                'google-youtube-error': '__youtubeError',
                 'stop': '__videoStopped',
                 'pause': '__pauseVideo',
                 'play': '__playVideo',
@@ -156,8 +157,13 @@
                     this.fire('stop')
 
                 }
-            }
-            ,
+            },
+
+            __youtubeError: function(e) {
+                console.log(e)
+                this.fire('stop')
+
+            },
             __pauseVideo: function () {
                 this.$.playerY.pause()
             }
@@ -187,7 +193,7 @@
             __playlistDataObserver: function (splices) {
                 var self = this
                 if ((splices) && (splices.indexSplices)) {
-                    
+
                     this.debounce('wait', function () {
                         var pl = splices.indexSplices[0].object
                         var a = ""
